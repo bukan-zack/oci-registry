@@ -1,8 +1,12 @@
+use axum::extract::Path;
 use axum::http::{HeaderMap, StatusCode};
 use axum::response::IntoResponse;
 
 // See: https://github.com/distribution/distribution/blob/5cb406d511b7b9163bff9b6439072e4892e5ae3b/docs/spec/api.md#fetch-blob
-pub async fn get_digest() -> impl IntoResponse {
+pub async fn get_digest(
+    Path(name): Path<String>,
+    Path(digest): Path<String>,
+) -> impl IntoResponse {
     let mut headers = HeaderMap::new();
 
     headers.insert("Content-Type", "application/octet-stream".parse().unwrap());
@@ -15,7 +19,10 @@ pub async fn get_digest() -> impl IntoResponse {
 }
 
 // See: https://github.com/distribution/distribution/blob/5cb406d511b7b9163bff9b6439072e4892e5ae3b/docs/spec/api.md#existing-layers
-pub async fn head_digest() -> impl IntoResponse {
+pub async fn head_digest(
+    Path(name): Path<String>,
+    Path(digest): Path<String>,
+) -> impl IntoResponse {
     let mut headers = HeaderMap::new();
 
     // The length of the requested blob content.
@@ -27,7 +34,10 @@ pub async fn head_digest() -> impl IntoResponse {
 }
 
 // See: https://github.com/distribution/distribution/blob/5cb406d511b7b9163bff9b6439072e4892e5ae3b/docs/spec/api.md#delete-blob
-pub async fn delete_digest() -> impl IntoResponse {
+pub async fn delete_digest(
+    Path(name): Path<String>,
+    Path(digest): Path<String>,
+) -> impl IntoResponse {
     let mut headers = HeaderMap::new();
 
     // 0.
@@ -39,7 +49,9 @@ pub async fn delete_digest() -> impl IntoResponse {
 }
 
 // See: https://github.com/distribution/distribution/blob/5cb406d511b7b9163bff9b6439072e4892e5ae3b/docs/spec/api.md#initiate-resumable-blob-upload
-pub async fn post_upload() -> impl IntoResponse {
+pub async fn post_upload(
+    Path(name): Path<String>,
+) -> impl IntoResponse {
     let mut headers = HeaderMap::new();
 
     // The Content-Length header must be zero and the body must be empty.
@@ -55,7 +67,10 @@ pub async fn post_upload() -> impl IntoResponse {
 }
 
 // See: https://github.com/distribution/distribution/blob/5cb406d511b7b9163bff9b6439072e4892e5ae3b/docs/spec/api.md#get-blob-upload
-pub async fn get_upload() -> impl IntoResponse {
+pub async fn get_upload(
+    Path(name): Path<String>,
+    Path(uuid): Path<String>,
+) -> impl IntoResponse {
     let mut headers = HeaderMap::new();
 
     // The Content-Length header must be zero and the body must be empty.
@@ -69,7 +84,10 @@ pub async fn get_upload() -> impl IntoResponse {
 }
 
 // See: https://github.com/distribution/distribution/blob/5cb406d511b7b9163bff9b6439072e4892e5ae3b/docs/spec/api.md#patch-blob-upload
-pub async fn patch_upload() -> impl IntoResponse {
+pub async fn patch_upload(
+    Path(name): Path<String>,
+    Path(uuid): Path<String>,
+) -> impl IntoResponse {
     let mut headers = HeaderMap::new();
 
     // The Content-Length header must be zero and the body must be empty.
@@ -85,7 +103,10 @@ pub async fn patch_upload() -> impl IntoResponse {
 }
 
 // See: https://github.com/distribution/distribution/blob/5cb406d511b7b9163bff9b6439072e4892e5ae3b/docs/spec/api.md#chunked-upload-1
-pub async fn put_upload() -> impl IntoResponse {
+pub async fn put_upload(
+    Path(name): Path<String>,
+    Path(uuid): Path<String>,
+) -> impl IntoResponse {
     let mut headers = HeaderMap::new();
 
     // The Content-Length header must be zero and the body must be empty.
@@ -101,7 +122,10 @@ pub async fn put_upload() -> impl IntoResponse {
 }
 
 // See: https://github.com/distribution/distribution/blob/5cb406d511b7b9163bff9b6439072e4892e5ae3b/docs/spec/api.md#delete-blob-upload
-pub async fn delete_upload() -> impl IntoResponse {
+pub async fn delete_upload(
+    Path(name): Path<String>,
+    Path(uuid): Path<String>,
+) -> impl IntoResponse {
     let mut headers = HeaderMap::new();
 
     // The Content-Length header must be zero and the body must be empty.

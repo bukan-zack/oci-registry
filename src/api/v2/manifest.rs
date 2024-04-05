@@ -1,3 +1,4 @@
+use axum::extract::Path;
 use axum::http::{HeaderMap, StatusCode};
 use axum::Json;
 use axum::response::IntoResponse;
@@ -29,7 +30,10 @@ pub struct History {
 }
 
 // See: https://github.com/distribution/distribution/blob/5cb406d511b7b9163bff9b6439072e4892e5ae3b/docs/spec/api.md#get-manifest
-pub async fn get_reference() -> impl IntoResponse {
+pub async fn get_reference(
+    Path(name): Path<String>,
+    Path(reference): Path<String>,
+) -> impl IntoResponse {
     let mut headers = HeaderMap::new();
 
     // Digest of the targeted content for the request.
@@ -39,7 +43,10 @@ pub async fn get_reference() -> impl IntoResponse {
 }
 
 // See: https://github.com/distribution/distribution/blob/5cb406d511b7b9163bff9b6439072e4892e5ae3b/docs/spec/api.md#existing-manifests
-pub async fn head_reference() -> impl IntoResponse {
+pub async fn head_reference(
+    Path(name): Path<String>,
+    Path(reference): Path<String>,
+) -> impl IntoResponse {
     let mut headers = HeaderMap::new();
 
     // The length of the targeted manifest.
@@ -52,7 +59,10 @@ pub async fn head_reference() -> impl IntoResponse {
 
 
 // See: https://github.com/distribution/distribution/blob/5cb406d511b7b9163bff9b6439072e4892e5ae3b/docs/spec/api.md#put-manifest
-pub async fn put_reference() -> impl IntoResponse {
+pub async fn put_reference(
+    Path(name): Path<String>,
+    Path(reference): Path<String>,
+) -> impl IntoResponse {
     let mut headers = HeaderMap::new();
 
     // The canonical location url of the uploaded manifest.
@@ -64,6 +74,9 @@ pub async fn put_reference() -> impl IntoResponse {
 }
 
 // See: https://github.com/distribution/distribution/blob/5cb406d511b7b9163bff9b6439072e4892e5ae3b/docs/spec/api.md#delete-manifest
-pub async fn delete_reference() -> impl IntoResponse {
+pub async fn delete_reference(
+    Path(name): Path<String>,
+    Path(reference): Path<String>,
+) -> impl IntoResponse {
     StatusCode::ACCEPTED
 }
