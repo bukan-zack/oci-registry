@@ -4,29 +4,32 @@ use axum::Json;
 use axum::response::IntoResponse;
 use serde::{Deserialize, Serialize};
 
-// See: https://github.com/distribution/distribution/blob/5cb406d511b7b9163bff9b6439072e4892e5ae3b/docs/spec/manifest-v2-1.md
+// See: https://github.com/opencontainers/distribution-spec/blob/ef28f81727c3b5e98ab941ae050098ea664c0960/detail.md#get-manifest
+// See: https://github.com/distribution/distribution/blob/5cb406d511b7b9163bff9b6439072e4892e5ae3b/docs/spec/manifest-v2-2.md#image-manifest
 #[derive(Default, Serialize, Deserialize)]
 pub struct Manifest {
-    name: String,
-    tag: String,
-    architecture: String,
-    #[serde(rename = "fsLayers")]
-    fs_layers: Vec<FsLayer>,
-    history: Vec<History>,
     #[serde(rename = "schemaVersion")]
-    schema_version: i32,
+    schema_version: i64,
+    #[serde(rename = "mediaType")]
+    media_type: String,
+    layers: Vec<ManifestLayer>,
 }
 
 #[derive(Default, Serialize, Deserialize)]
-pub struct FsLayer {
-    #[serde(rename = "blobSum")]
-    blob_sum: String,
+pub struct ManifestConfig {
+    #[serde(rename = "mediaType")]
+    media_type: String,
+    size: i64,
+    digest: String,
 }
 
 #[derive(Default, Serialize, Deserialize)]
-pub struct History {
-    #[serde(rename = "v1Compatibility")]
-    v1_compatibility: String,
+pub struct ManifestLayer {
+    #[serde(rename = "mediaType")]
+    media_type: String,
+    size: i64,
+    digest: String,
+    urls: Vec<String>,
 }
 
 // See: https://github.com/distribution/distribution/blob/5cb406d511b7b9163bff9b6439072e4892e5ae3b/docs/spec/api.md#get-manifest
